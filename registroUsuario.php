@@ -101,6 +101,7 @@
             <input type="submit" value="Enviar">
         </form>
         <!--Comprobación-->
+        
         <?php
         if(isset($usuario) && isset($password) && isset($fecha)) {
             echo "<h3>Usuario: $usuario</h3>";
