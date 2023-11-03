@@ -6,12 +6,13 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <?php require 'conexionTienda.php'?>
+    <?php require 'util.php'?>
 </head>
 <body>
 <?php
     if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $usuario=$_POST["usuario"];
-        $contrasena=$_POST["password"];
+        $usuario=depurar($_POST["usuario"]);
+        $contrasena=depurar($_POST["password"]);
 
         $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
         $resultado=$conexion -> query ($sql);
