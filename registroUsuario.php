@@ -6,6 +6,7 @@
     <title>Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <?php require 'util.php' ?>
+    <?php require 'conexionTienda.php' ?>
 </head>
 <body>
     <!--Validaciones Formulario-->
@@ -107,6 +108,13 @@
             echo "<h3>Usuario: $usuario</h3>";
             echo "<h3>Contraseña: $password</h3>";
             echo "<h3>Fecha: $fecha</h3>";
+            $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento)
+                VALUES ('$usuario','$password','$fecha')";
+            $conexion->query($sql);
+            //Cesta autogenerada
+            $sql = "INSERT INTO cestas (usuario, precioTotal)
+                VALUES ('$usuario',0)";
+            $conexion->query($sql);
         }
         ?>
     </div>
