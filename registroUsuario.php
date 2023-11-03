@@ -108,13 +108,15 @@
             echo "<h3>Usuario: $usuario</h3>";
             echo "<h3>Contraseña: $password</h3>";
             echo "<h3>Fecha: $fecha</h3>";
+            $cypher_pass=password_hash($password, PASSWORD_DEFAULT);
             $sql = "INSERT INTO usuarios (usuario, contrasena, fechaNacimiento)
-                VALUES ('$usuario','$password','$fecha')";
+                VALUES ('$usuario','$cypher_pass','$fecha')";
             $conexion->query($sql);
             //Cesta autogenerada
             $sql = "INSERT INTO cestas (usuario, precioTotal)
                 VALUES ('$usuario',0)";
             $conexion->query($sql);
+            header('location: inicio_sesion.php');
         }
         ?>
     </div>
