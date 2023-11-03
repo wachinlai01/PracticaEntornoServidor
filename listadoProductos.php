@@ -9,8 +9,13 @@
 </head>
 <body>
 <body>
+    <?php
+        session_start();
+        $usuario=$_SESSION["usuario"];
+    ?>
     <div class="container">
         <h1>Listado Productos</h1>
+        <p>Bienvenido <?php echo $usuario?> </p>
         <?php
         $sql = "SELECT * FROM productos ";
         $resultado = $conexion -> query($sql);
