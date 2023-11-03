@@ -15,10 +15,10 @@ CREATE TABLE usuarios(
     fechaNacimiento DATE NOT NULL
 );
 
-CREATE TABLE Cestas(
+CREATE TABLE cestas(
 	idCesta INT PRIMARY KEY AUTO_INCREMENT,
     usuario VARCHAR(12),
-    cantidad NUMERIC(2) NOT NULL,
+    precioTotal NUMERIC(7,2) NOT NULL,
     CONSTRAINT Fk_Cestas 
 		FOREIGN KEY (usuario)
         REFERENCES usuarios(usuario)
@@ -38,4 +38,8 @@ CREATE TABLE productosCestas (
         REFERENCES Cestas(idCesta)
 );
 
+SELECT * FROM productos;
 SELECT * FROM usuarios;
+SELECT * FROM cestas;
+-- Para poder borrar
+SET SQL_SAFE_UPDATES = 0;
