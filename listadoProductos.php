@@ -11,7 +11,14 @@
 <body>
     <?php
         session_start();
-        $usuario=$_SESSION["usuario"];
+
+        if (isset($_SESSION["usuario"])){
+            $usuario=$_SESSION["usuario"];
+        }else{
+            //header('location: inicio_sesion.php'); //redireccion a inicio sesion
+            $_SESSION["usuario"]="invitado";
+            $usuario=$_SESSION["usuario"];
+        }
     ?>
     <div class="container">
         <h1>Listado Productos</h1>
