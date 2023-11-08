@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de productos</title>
     <?php require "conexionTienda.php" ?>
+    <?php require "classProducto.php" ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
@@ -18,6 +19,22 @@
             //header('location: inicio_sesion.php'); //redireccion a inicio sesion
             $_SESSION["usuario"]="invitado";
             $usuario=$_SESSION["usuario"];
+        }
+
+        //Vamos a crear los objeto productos
+        $sql = "SELECT * FROM productos ";
+        $resultado = $conexion -> query($sql);
+        $productos=[];
+        while($fila=$resultado -> fetch_assoc()){
+            $idProducto = $fila ["idProducto"];
+            $nombreProducto = $fila ["nombreProducto"];
+            $precio = $fila ["precio"];
+            $descripcion = $fila ["descripcion"];
+            $cantidad = $fila ["cantidad"];
+            $imagen = $fila ["imagen"];
+            $nuevoProducto=new Producto($idProducto,$nombreProducto,$precio,$descripcion,
+                                            $cantidad,$imagen);
+            array_push($productos,$nuevoProducto);
         }
     ?>
     <div class="container">
@@ -40,15 +57,16 @@
             </thead>
             <tbody>
                 <?php
-                while($fila=$resultado -> fetch_assoc()){
+                foreach ($productos as $producto){
                     echo "<tr>";
-                        echo "<td>".$fila["idProducto"]."</td>";
-                        echo "<td>".$fila["nombreProducto"]."</td>";
-                        echo "<td>".$fila["precio"]."</td>";
-                        echo "<td>".$fila["descripcion"]."</td>";
-                        echo "<td>".$fila["cantidad"]."</td>";?>
+                        echo "<td>".$producto->idProducto."</td>";
+                        echo "<td>".$producto->nombreProducto."</td>";
+                        echo "<td>".$producto->precio."</td>";
+                        echo "<td>".$producto->descripcion."</td>";
+                        echo "<td>".$producto->cantidad."</td>";?>
+                        
                         <td>
-                        <img  height="80" src="<?php echo $fila["imagen"]?>">
+                        <img  height="80" src="<?php echo $producto->imagen?>">
                         </td><?php
                     echo "</tr>";
                 }
