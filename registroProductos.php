@@ -75,11 +75,30 @@
             }
         }
 
+        $nombre_fichero = $_FILES["imagen"]["name"];
+        if (strlen($nombre_fichero)==0){
+            $err_imagen="CAMPO OBLIGATORIO";
+        }else{
+            $tipo=$_FILES["imagen"]["type"];
+            if ($tipo!="image/jpeg"&&$tipo!="image/jpg"&&$tipo!="image/png"){
+                $err_imagen="Formato incorrecto";
+            }else{
+                $tam=$_FILES["imagen"]["size"];//Devuelve el tamaño en bytes
+                if ($tam>5242880){
+                    $err_imagen="Tamaño maximo 5MB";
+                }
+                else{
+                    $ruta_temporal=$_FILES["imagen"]["tmp_name"];
+                    $ruta = "imagenes/".$nombre_fichero;
+                    move_uploaded_file($ruta_temporal,$ruta);
+                }
+            }
+        }
     }
     ?>
     <!--Formulario-->
     <div class="container">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Nombre del producto</label>
                 <input class="form-control" type="text" name="producto">
@@ -124,18 +143,29 @@
                 <?php
                 } ?>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Imagen</label>
+                <input class="form-control" type="file" name="imagen">
+                <?php 
+                if(isset($err_imagen)) { ?>
+                    <div>
+                        <?php echo $err_imagen ?>
+                    </div>
+                <?php
+                } ?>
+            </div>
             <br><br>
             <input type="submit" value="Enviar">
         </form>
         <!--Comprobación-->
         <?php
-        if(isset($producto) && isset($precio) && isset($descripcion) && isset($cantidad)) {
+        if(isset($producto) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($ruta)) {
             echo "<h3>Nombre del producto: $producto</h3>";
             echo "<h3>Precio del producto: $precio</h3>";
             echo "<h3>Descripcion del producto: $descripcion</h3>";
             echo "<h3>Stock: $cantidad</h3>";
-            $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad)
-                VALUES ('$producto','$precio','$descripcion','$cantidad')";
+            $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen)
+                VALUES ('$producto','$precio','$descripcion','$cantidad', '$ruta')";
             $conexion->query($sql);
         }
         ?>

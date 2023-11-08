@@ -35,6 +35,7 @@
                     <th>Precio</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
+                    <th>Imagen</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +46,10 @@
                         echo "<td>".$fila["nombreProducto"]."</td>";
                         echo "<td>".$fila["precio"]."</td>";
                         echo "<td>".$fila["descripcion"]."</td>";
-                        echo "<td>".$fila["cantidad"]."</td>";
+                        echo "<td>".$fila["cantidad"]."</td>";?>
+                        <td>
+                        <img  height="80" src="<?php echo $fila["imagen"]?>">
+                        </td><?php
                     echo "</tr>";
                 }
                 ?>

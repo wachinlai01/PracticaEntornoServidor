@@ -9,6 +9,9 @@ CREATE TABLE productos(
     cantidad NUMERIC(5) NOT NULL
 );
 
+ALTER TABLE productos
+	ADD COLUMN imagen VARCHAR(100) NOT NULL;
+
 CREATE TABLE usuarios(
 	usuario VARCHAR(12) PRIMARY KEY,
     contrasena VARCHAR(255) NOT NULL,
@@ -38,8 +41,10 @@ CREATE TABLE productosCestas (
         REFERENCES Cestas(idCesta)
 );
 
+
 SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
+
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
