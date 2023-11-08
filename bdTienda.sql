@@ -18,6 +18,9 @@ CREATE TABLE usuarios(
     fechaNacimiento DATE NOT NULL
 );
 
+ALTER TABLE usuarios
+	ADD COLUMN rol VARCHAR(10) NOT NULL DEFAULT 'cliente';
+
 CREATE TABLE cestas(
 	idCesta INT PRIMARY KEY AUTO_INCREMENT,
     usuario VARCHAR(12),
@@ -45,6 +48,6 @@ CREATE TABLE productosCestas (
 SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
-
+DELETE FROM productos;
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
