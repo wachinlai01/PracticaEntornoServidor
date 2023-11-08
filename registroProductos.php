@@ -9,7 +9,14 @@
     <?php require 'conexionTienda.php' ?>
 </head>
 <body>
-    <!--Validaciones Formulario-->
+    <!--Validaciones Formulario
+     session_start();
+    $usuario = $_SESSION['usuario'];
+    $rol="SELECT rol FROM usuarios WHERE usuario=$usuario";
+    if ($rol=="cliente"){
+        header('location: listadoProductos.php');
+    }
+    -->
     <?php
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         //Variables temporales
