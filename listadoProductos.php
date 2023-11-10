@@ -14,6 +14,11 @@
         session_start();
         if (isset($_SESSION["usuario"])){
             $usuario=$_SESSION["usuario"];
+            //Obtenemos el resultado de la usuario
+            $consulta = "SELECT rol FROM usuarios WHERE usuario='$usuario'";
+            $resultado = $conexion->query($consulta);
+            $fila = $resultado->fetch_assoc();
+            $rol = $fila['rol'];
         }else{
             $usuario="invitado";
         }
@@ -46,6 +51,13 @@
             <button class="btn btn-dark" style= "float:right; margin:10px">
                 <a href="inicio_sesion.php" style="text-decoration:none; color:white">Iniciar sesión</a>
             </button><?php
+        }
+        if (isset($rol)){
+            if ($rol=="admin"){?>
+                <button class="btn btn-dark" style= "float:right; margin:10px">
+                    <a href="registroProductos.php" style="text-decoration:none; color:white">Agregar Producto</a>
+                </button><?php
+            }
         }
         ?>
         <table class="table table-primary">
