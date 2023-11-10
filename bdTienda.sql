@@ -45,7 +45,7 @@ CREATE TABLE productosCestas (
 );
 
 COMMIT;
-UPDATE usuarios SET rol = "admin" WHERE nombre = 'Wachinlai';
+UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
 SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
