@@ -44,7 +44,8 @@ CREATE TABLE productosCestas (
         REFERENCES Cestas(idCesta)
 );
 
-
+COMMIT;
+UPDATE usuarios SET rol = "admin" WHERE nombre = 'Wachinlai';
 SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
