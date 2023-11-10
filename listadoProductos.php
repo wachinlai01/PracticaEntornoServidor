@@ -40,8 +40,8 @@
         }
     ?>
     <div class="container">
-        <h1>Listado Productos</h1>
-        <p>Bienvenido <?php echo $usuario?> </p>
+        <h1 style="text-align:center; margin:20px;">Listado Productos</h1>
+        <p style="text-align:center;">Bienvenido <?php echo $usuario?> </p>
         <?php
         if (isset($_SESSION["usuario"])){?>
             <button class="btn btn-dark" style= "float:right; margin:10px">

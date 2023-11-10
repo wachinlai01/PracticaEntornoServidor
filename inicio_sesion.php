@@ -35,7 +35,7 @@
     }
     ?>
     <div class="container">
-        <h1>Inicio de sesion</h1>
+        <h1 style="text-align:center; margin:20px;">Inicio de sesion</h1>
         <form action="" method="post">
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
