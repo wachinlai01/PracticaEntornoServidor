@@ -111,6 +111,7 @@
     }
     ?>
     <!--Formulario-->
+    <h1 style="text-align:center; margin:20px;">Registro de Productos</h1>
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
@@ -171,6 +172,9 @@
             <br><br>
             <input type="submit" value="Enviar">
         </form>
+        <button class="btn btn-dark" style= "float:right; margin:10px">
+            <a href="listadoProductos.php" style="text-decoration:none; color:white">Página Principal </a>
+        </button>
         <!--Comprobación-->
         <?php
         if(isset($producto) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($ruta)) {
