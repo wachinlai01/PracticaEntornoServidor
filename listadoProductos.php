@@ -33,10 +33,21 @@
                                             $cantidad,$imagen);
             array_push($productos,$nuevoProducto);
         }
+
+        //Funcionamiento de cerrar sesion
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            session_destroy();
+            header('location: inicio_sesion.php');
+        }
     ?>
     <div class="container">
         <h1>Listado Productos</h1>
         <p>Bienvenido <?php echo $usuario?> </p>
+        <form  action="" method="post">
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Cerrar sesion">
+            </div>
+        </form>
         <table class="table table-primary">
             <thead class="table-dark">
                 <tr>
