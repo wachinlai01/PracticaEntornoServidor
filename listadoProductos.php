@@ -12,13 +12,10 @@
 <body>
     <?php
         session_start();
-
         if (isset($_SESSION["usuario"])){
             $usuario=$_SESSION["usuario"];
         }else{
-            //header('location: inicio_sesion.php'); //redireccion a inicio sesion
-            $_SESSION["usuario"]="invitado";
-            $usuario=$_SESSION["usuario"];
+            $usuario="invitado";
         }
 
         //Vamos a crear los objeto productos
@@ -40,10 +37,6 @@
     <div class="container">
         <h1>Listado Productos</h1>
         <p>Bienvenido <?php echo $usuario?> </p>
-        <?php
-        $sql = "SELECT * FROM productos ";
-        $resultado = $conexion -> query($sql);
-        ?>
         <table class="table table-primary">
             <thead class="table-dark">
                 <tr>
