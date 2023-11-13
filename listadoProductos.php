@@ -45,10 +45,11 @@
         $id_producto=$_POST["id_producto"];
         //echo "<p>El videojuego selecionado es $id_producto</p>";
 
-        /**
-         * $cantidad=1;
-         * $id_cesta= SELECT ... a partir de id.
-         */
+        $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
+        $resultadoCesta= $conexion->query($consultaCesta);
+        $filaCesta=$resultadoCesta->fetch_assoc();
+        $idCesta=$filaCesta["idCesta"];
+        echo $idCesta;
     }
     ?>
     <div class="container">
