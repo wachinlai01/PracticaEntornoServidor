@@ -39,6 +39,18 @@
             array_push($productos,$nuevoProducto);
         }
     ?>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"]=="POST"){
+        $id_producto=$_POST["id_producto"];
+        //echo "<p>El videojuego selecionado es $id_producto</p>";
+
+        /**
+         * $cantidad=1;
+         * $id_cesta= SELECT ... a partir de id.
+         */
+    }
+    ?>
     <div class="container">
         <h1 style="text-align:center; margin:20px;">Listado Productos</h1>
         <p style="text-align:center;">Bienvenido <?php echo $usuario?> </p>
@@ -69,21 +81,28 @@
                     <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Imagen</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                foreach ($productos as $producto){
-                    echo "<tr>";
-                        echo "<td>".$producto->idProducto."</td>";
-                        echo "<td>".$producto->nombreProducto."</td>";
-                        echo "<td>".$producto->precio."</td>";
-                        echo "<td>".$producto->descripcion."</td>";
-                        echo "<td>".$producto->cantidad."</td>";?>
-                        
+                foreach ($productos as $producto){?>
+                    <tr>
+                        <td><?php echo $producto->idProducto ?></td>
+                        <td><?php echo $producto->nombreProducto ?></td>
+                        <td><?php echo $producto->precio ?></td>
+                        <td><?php echo $producto->descripcion ?></td>
+                        <td><?php echo $producto->cantidad ?></td>
                         <td>
                         <img  height="80" src="<?php echo $producto->imagen?>">
-                        </td><?php
+                        </td>
+                        <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto?>">
+                            <input class="btn btn-warning" type="submit" value="Añadir cesta">
+                        </form>
+                        </td>
+                        <?php
                     echo "</tr>";
                 }
                 ?>
