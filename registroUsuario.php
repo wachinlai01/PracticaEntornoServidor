@@ -64,6 +64,7 @@
     ?>
     <!--Formulario-->
     <div class="container">
+        <h1 style="text-align:center; margin:20px;">Crea una cuenta</h1>
         <form action="" method="post">
             <div class="mb-3">
                 <label class="form-label">Nombre de usuario</label>
@@ -99,7 +100,7 @@
                 } ?>
             </div>
             <br><br>
-            <input type="submit" value="Enviar">
+            <input type="submit" class="btn btn-primary" value="Enviar">
         </form>
         <!--Comprobación-->
         
