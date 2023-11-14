@@ -41,12 +41,27 @@
 
         if ($_SERVER["REQUEST_METHOD"]=="POST"){
             $id_producto=$_POST["id_producto"];
+            $unidades_tmp=$_POST["unidades"];
+            //Array con los valores validos del select
+            $valoresPermitidos = ['1', '2', '3','4','5'];
             //Obtenemos el id de la cesta
             $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
             $resultadoCesta= $conexion->query($consultaCesta);
             $filaCesta=$resultadoCesta->fetch_assoc();
             $idCesta=$filaCesta["idCesta"];
-            echo $idCesta;
+            //Almacenamos el id de la cesta para usarla en otra página
+            $_SESSION['idCesta'] = $idCesta;
+
+            if (isset($unidades_tmp) && in_array($unidades_tmp, $valoresPermitidos)) {
+                $unidades=$unidades_tmp;
+            }else{
+                $error_unidades="No intentes hackearme";
+            }
+            //Almacenamos el numero de unidades seleccionadas para usarla en otra página
+            $_SESSION['unidades']=$unidades;
+
+            echo $_SESSION['unidades'];
+            echo $_SESSION['idCesta'];
     }
     ?>
     <div class="container">
@@ -100,6 +115,17 @@
                             <td>
                                 <form action="" method="post">
                                     <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto?>">
+                                    <select name="unidades"><?php
+                                        if (isset($error_unidades)){
+                                            echo $error_unidades;
+                                        }
+                                        ?>
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
                                     <input class="btn btn-warning" type="submit" value="Añadir cesta">
                                 </form>
                             </td><?php
@@ -110,6 +136,16 @@
             </tbody>
         </table>
     </div>
+    <?php
+    if(isset($unidades)) {
+        echo "<h3>Id del producto: $id_producto</h3>";
+        echo "<h3>Id de la cesta: $idCesta</h3>";
+        echo "<h3>Cantidad a comprar: $unidades</h3>";
+        $sql = "INSERT INTO productosCestas (idProducto, idCesta, cantidad)
+            VALUES ('$id_producto','$idCesta','$unidades')";
+        $conexion->query($sql);
+    }
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
