@@ -43,7 +43,7 @@
     <?php
     if ($_SERVER["REQUEST_METHOD"]=="POST"){
         $id_producto=$_POST["id_producto"];
-        //echo "<p>El videojuego selecionado es $id_producto</p>";
+
 
         $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
         $resultadoCesta= $conexion->query($consultaCesta);
