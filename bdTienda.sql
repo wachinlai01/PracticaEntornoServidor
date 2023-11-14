@@ -49,6 +49,7 @@ UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
 SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
+SELECT * FROM productosCestas;
 DELETE FROM productos;
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
