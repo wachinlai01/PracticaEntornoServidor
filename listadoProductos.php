@@ -19,6 +19,13 @@
             $resultado = $conexion->query($consulta);
             $fila = $resultado->fetch_assoc();
             $rol = $fila['rol'];
+            //Obtenemos el id de la cesta
+            $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
+            $resultadoCesta= $conexion->query($consultaCesta);
+            $filaCesta=$resultadoCesta->fetch_assoc();
+            $idCesta=$filaCesta["idCesta"];
+            //Almacenamos el id de la cesta para usarla en otra página
+            $_SESSION['idCesta'] = $idCesta;
         }else{
             $usuario="invitado";
         }
@@ -44,24 +51,12 @@
             $unidades_tmp=$_POST["unidades"];
             //Array con los valores validos del select
             $valoresPermitidos = ['1', '2', '3','4','5'];
-            //Obtenemos el id de la cesta
-            $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
-            $resultadoCesta= $conexion->query($consultaCesta);
-            $filaCesta=$resultadoCesta->fetch_assoc();
-            $idCesta=$filaCesta["idCesta"];
-            //Almacenamos el id de la cesta para usarla en otra página
-            $_SESSION['idCesta'] = $idCesta;
-
             if (isset($unidades_tmp) && in_array($unidades_tmp, $valoresPermitidos)) {
                 $unidades=$unidades_tmp;
             }else{
                 $error_unidades="No intentes hackearme";
             }
-            //Almacenamos el numero de unidades seleccionadas para usarla en otra página
-            $_SESSION['unidades']=$unidades;
 
-            echo $_SESSION['unidades'];
-            echo $_SESSION['idCesta'];
     }
     ?>
     <div class="container">
@@ -71,6 +66,9 @@
         if (isset($_SESSION["usuario"])){?>
             <button class="btn btn-dark" style= "float:right; margin:10px">
                 <a href="cerrarsesion.php" style="text-decoration:none; color:white">Cerrar sesión</a>
+            </button>
+            <button class="btn btn-dark" style= "float:right; margin:10px">
+                <a href="cesta.php" style="text-decoration:none; color:white">Ver cesta</a>
             </button><?php
         }else{?>
             <button class="btn btn-dark" style= "float:right; margin:10px">
@@ -138,12 +136,24 @@
     </div>
     <?php
     if(isset($unidades)) {
-        echo "<h3>Id del producto: $id_producto</h3>";
-        echo "<h3>Id de la cesta: $idCesta</h3>";
-        echo "<h3>Cantidad a comprar: $unidades</h3>";
-        $sql = "INSERT INTO productosCestas (idProducto, idCesta, cantidad)
-            VALUES ('$id_producto','$idCesta','$unidades')";
-        $conexion->query($sql);
+        // Comprobamos si el producto existe en nuestra cesta
+        $consultaProductoExistente = "SELECT cantidad FROM productosCestas WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+        $resultadoProductoExistente = $conexion->query($consultaProductoExistente);
+
+        if ($resultadoProductoExistente->num_rows > 0) {
+            // El producto ya está en la cesta, actualizamos la cantidad
+            $filaExistente = $resultadoProductoExistente->fetch_assoc();
+            $cantidadExistente = $filaExistente["cantidad"];
+            $nuevaCantidad = $cantidadExistente + $unidades;
+
+            // Actualizamos la cantidad en la base de datos
+            $sql = "UPDATE productosCestas SET cantidad='$nuevaCantidad' WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+            $conexion->query($sql);
+        } else {
+            // El producto no está en la cesta, lo añadimos
+            $sql = "INSERT INTO productosCestas (idProducto, idCesta, cantidad) VALUES ('$id_producto','$idCesta','$unidades')";
+            $conexion->query($sql);
+        }
     }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
