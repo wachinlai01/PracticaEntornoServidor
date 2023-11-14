@@ -14,7 +14,7 @@
         session_start();
         if (isset($_SESSION["usuario"])){
             $usuario=$_SESSION["usuario"];
-            //Obtenemos el resultado de la usuario
+            //Obtenemos rol del usuario
             $consulta = "SELECT rol FROM usuarios WHERE usuario='$usuario'";
             $resultado = $conexion->query($consulta);
             $fila = $resultado->fetch_assoc();
@@ -38,18 +38,15 @@
                                             $cantidad,$imagen);
             array_push($productos,$nuevoProducto);
         }
-    ?>
 
-    <?php
-    if ($_SERVER["REQUEST_METHOD"]=="POST"){
-        $id_producto=$_POST["id_producto"];
-
-
-        $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
-        $resultadoCesta= $conexion->query($consultaCesta);
-        $filaCesta=$resultadoCesta->fetch_assoc();
-        $idCesta=$filaCesta["idCesta"];
-        echo $idCesta;
+        if ($_SERVER["REQUEST_METHOD"]=="POST"){
+            $id_producto=$_POST["id_producto"];
+            //Obtenemos el id de la cesta
+            $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
+            $resultadoCesta= $conexion->query($consultaCesta);
+            $filaCesta=$resultadoCesta->fetch_assoc();
+            $idCesta=$filaCesta["idCesta"];
+            echo $idCesta;
     }
     ?>
     <div class="container">
@@ -81,8 +78,10 @@
                     <th>Precio</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
-                    <th>Imagen</th>
-                    <th></th>
+                    <th>Imagen</th><?php
+                    if ($usuario!="invitado"){?>
+                        <th></th><?php
+                    }?>
                 </tr>
             </thead>
             <tbody>
@@ -96,14 +95,15 @@
                         <td><?php echo $producto->cantidad ?></td>
                         <td>
                         <img  height="80" src="<?php echo $producto->imagen?>">
-                        </td>
-                        <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto?>">
-                            <input class="btn btn-warning" type="submit" value="Añadir cesta">
-                        </form>
-                        </td>
-                        <?php
+                        </td><?php
+                        if ($usuario!="invitado"){?>
+                            <td>
+                                <form action="" method="post">
+                                    <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto?>">
+                                    <input class="btn btn-warning" type="submit" value="Añadir cesta">
+                                </form>
+                            </td><?php
+                        }
                     echo "</tr>";
                 }
                 ?>
