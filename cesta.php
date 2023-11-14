@@ -23,11 +23,30 @@
     $resultadoCesta = $conexion->query($consultaCesta);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        //Para vaciar la cesta
         if (isset($_POST["vaciarCesta"])){
             // Eliminar todos los productos de la cesta
             $sqlEliminarProductos = "DELETE FROM productosCestas WHERE idCesta = '$idCesta'";
             $conexion->query($sqlEliminarProductos);
             header('location: cesta.php');
+        }
+        //Para eliminar un producto en particular
+        if (isset($_POST["unidades"], $_POST["productoEliminar"], $_POST["cantidadActual"])) {
+            $idProductoEliminar = $_POST['productoEliminar'];
+            $unidades = $_POST['unidades'];
+            $cantidadActual=$_POST["cantidadActual"];
+            $cantidadTotal=$cantidadActual-$unidades;
+            if ($cantidadTotal > 0) {
+                // Si la nueva cantidad es positiva, actualizamos la tabla
+                $sqlActualizarCantidad = "UPDATE productosCestas SET cantidad = $cantidadTotal WHERE idProducto='$idProductoEliminar'";
+                $conexion->query($sqlActualizarCantidad);
+                header('location: cesta.php');
+            } else {
+                // Si la nueva cantidad es 0 o negativa, eliminamos el producto
+                $sqlEliminarProducto = "DELETE FROM productosCestas WHERE idProducto='$idProductoEliminar'";
+                $conexion->query($sqlEliminarProducto);
+                header('location: cesta.php');
+            }
         }
     }
     ?>
@@ -48,6 +67,7 @@
                 <th>Imagen</th>
                 <th>Cantidad</th>
                 <th>Precio total</th>
+                <th><th>
             </thead>
             <tbody><?php
             while ($filaCesta = $resultadoCesta->fetch_assoc()) {?>
@@ -56,6 +76,24 @@
                     <td><img height="80" src="<?php echo $filaCesta['imagen']?>"></td>
                     <td><?php echo $filaCesta['cantidad']?></td>
                     <td><?php echo ($filaCesta['precio']*$filaCesta['cantidad'])?></td>
+                    <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="productoEliminar" value="<?php echo $filaCesta['idProducto']?>">
+                            <input type="hidden" name="cantidadActual" value="<?php echo $filaCesta['cantidad']?>">
+                            <select name="unidades"><?php
+                                if (isset($error_unidades)){
+                                    echo $error_unidades;
+                                }
+                                ?>
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <input class="btn btn-warning" type="submit" value="Eliminar de la cesta">
+                        </form>
+                    </td>
                 </tr><?php
             }?>
             </tbody>
