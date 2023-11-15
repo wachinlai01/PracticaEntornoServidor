@@ -57,12 +57,12 @@
         <h1 style="text-align:center; margin:20px;">Cesta de <?php echo $usuario?></h1>
         <?php
         if (isset($_SESSION["usuario"])){?>
-            <button class="btn btn-dark" style= "float:right; margin:10px">
-                <a href="cerrarsesion.php" style="text-decoration:none; color:white">Cerrar sesión</a>
-            </button>
-            <button class="btn btn-dark" style= "float:right; margin:10px">
-                <a href="listadoProductos.php" style="text-decoration:none; color:white">Seguir comprando</a>
-            </button><?php
+            <a class="btn btn-dark" href="cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            Cerrar sesión
+            </a>
+            <a class="btn btn-dark" href="listadoProductos.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            Seguir comprando
+            </a><?php
         }?>
         <?php $precioTotal=0; ?>
         <table class="table table-primary">

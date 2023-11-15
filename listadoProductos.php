@@ -66,22 +66,22 @@
         <p style="text-align:center;">Bienvenido <?php echo $usuario?> </p>
         <?php
         if (isset($_SESSION["usuario"])){?>
-            <button class="btn btn-dark" style= "float:right; margin:10px">
-                <a href="cerrarsesion.php" style="text-decoration:none; color:white">Cerrar sesión</a>
-            </button>
-            <button class="btn btn-dark" style= "float:right; margin:10px">
-                <a href="cesta.php" style="text-decoration:none; color:white">Ver cesta</a>
-            </button><?php
+            <a class="btn btn-dark" href="cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            Cerrar sesión
+            </a>
+            <a class="btn btn-dark" href="cesta.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            Ver cesta
+            </a><?php
         }else{?>
-            <button class="btn btn-dark" style= "float:right; margin:10px">
-                <a href="inicio_sesion.php" style="text-decoration:none; color:white">Iniciar sesión</a>
-            </button><?php
+            <a class="btn btn-dark" href="inicio_sesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            Iniciar sesión
+            </a><?php
         }
         if (isset($rol)){
             if ($rol=="admin"){?>
-                <button class="btn btn-dark" style= "float:right; margin:10px">
-                    <a href="registroProductos.php" style="text-decoration:none; color:white">Agregar Producto</a>
-                </button><?php
+                <a class="btn btn-dark" href="registroProductos.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+                Agregar Producto
+                </a><?php
             }
         }
         ?>

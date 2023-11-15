@@ -167,11 +167,11 @@
                 } ?>
             </div>
             <br><br>
-            <input type="submit" value="Enviar">
+            <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
-        <button class="btn btn-dark" style= "float:right; margin:10px">
-            <a href="listadoProductos.php" style="text-decoration:none; color:white">Página Principal </a>
-        </button>
+        <a class="btn btn-dark" href="listadoProductos.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+        Página Principal
+        </a>
         <!--Comprobación-->
         <?php
         if(isset($producto) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($ruta)) {

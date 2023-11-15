@@ -102,6 +102,10 @@
             <br><br>
             <input type="submit" class="btn btn-primary" value="Enviar">
         </form>
+
+        <a class="btn btn-dark"  href="inicio_sesion.php" style= "float:right; margin:10px;text-decoration:none; color:white">
+        Ya tengo cuenta
+        </a>
         <!--Comprobación-->
         
         <?php
