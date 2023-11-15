@@ -13,10 +13,7 @@
         session_start();
         if (isset($_SESSION['usuario'])) {
             $usuario = $_SESSION['usuario'];
-            $consulta = "SELECT rol FROM usuarios WHERE usuario='$usuario'";
-            $resultado = $conexion->query($consulta);
-            $fila = $resultado->fetch_assoc();
-            $rol = $fila['rol'];
+            $rol = $_SESSION["rol"];
             if ($rol == "cliente") {
                 header('location: listadoProductos.php');
             } 
