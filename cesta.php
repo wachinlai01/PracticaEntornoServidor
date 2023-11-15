@@ -51,7 +51,7 @@
                       INNER JOIN productos ON productosCestas.idProducto = productos.idProducto
                       WHERE productosCestas.idCesta = '$idCesta'";
     $resultadoCesta = $conexion->query($consultaCesta);
-    
+
     ?>
     <div class="container">
         <h1 style="text-align:center; margin:20px;">Cesta de <?php echo $usuario?></h1>
@@ -64,13 +64,16 @@
                 <a href="listadoProductos.php" style="text-decoration:none; color:white">Seguir comprando</a>
             </button><?php
         }?>
+        <?php $precioTotal=0; ?>
         <table class="table table-primary">
             <thead class="table-dark">
-                <th>Producto</th>
-                <th>Imagen</th>
-                <th>Cantidad</th>
-                <th>Precio total</th>
-                <th><th>
+                <tr>
+                    <th>Producto</th>
+                    <th>Imagen</th>
+                    <th>Cantidad</th>
+                    <th>Precio por unidad</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody><?php
             while ($filaCesta = $resultadoCesta->fetch_assoc()) {?>
@@ -78,8 +81,9 @@
                     <td><?php echo $filaCesta['nombreProducto']?></td>
                     <td><img height="80" src="<?php echo $filaCesta['imagen']?>"></td>
                     <td><?php echo $filaCesta['cantidad']?></td>
-                    <td><?php echo ($filaCesta['precio']*$filaCesta['cantidad'])?></td>
+                    <td><?php echo ($filaCesta['precio'])?></td>
                     <td>
+                        <?php $precioTotal+=$filaCesta['precio']*$filaCesta['cantidad']?>
                         <form action="" method="post">
                             <input type="hidden" name="productoEliminar" value="<?php echo $filaCesta['idProducto']?>">
                             <input type="hidden" name="cantidadActual" value="<?php echo $filaCesta['cantidad']?>">
@@ -100,6 +104,11 @@
                 </tr><?php
             }?>
             </tbody>
+            <tfoot class="table-danger">
+                <tr>
+                    <td style="text-align: center;" colspan="5"><b>Precio total: <?php echo $precioTotal; ?>€</b></td>
+                </tr>
+            </tfoot>
         </table>
         <form method="post" style="text-align:center;">
                 <button class="btn btn-danger" name="vaciarCesta" type="submit">Vaciar Cesta</button>
