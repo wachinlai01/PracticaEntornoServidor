@@ -169,7 +169,10 @@
             <br><br>
             <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
-        <a class="btn btn-dark" href="listadoProductos.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+        <a class="btn btn-dark" href="cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            Cerrar sesión
+        </a>
+        <a class="btn btn-dark" href="listadoProductos.php" style= "margin:10px; text-decoration:none; color:white">
         Página Principal
         </a>
         <!--Comprobación-->
