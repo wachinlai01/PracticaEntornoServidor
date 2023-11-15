@@ -14,13 +14,8 @@
     if (!isset($usuario)){
         header('location: listadoProductos.php');
     }
+
     $idCesta = $_SESSION['idCesta'];
-    //Consulta para obtener los datos de la cesta
-    $consultaCesta = "SELECT productosCestas.idProducto, productos.nombreProducto, productos.imagen, productosCestas.cantidad, productos.precio
-                      FROM productosCestas
-                      INNER JOIN productos ON productosCestas.idProducto = productos.idProducto
-                      WHERE productosCestas.idCesta = '$idCesta'";
-    $resultadoCesta = $conexion->query($consultaCesta);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //Para vaciar la cesta
@@ -28,7 +23,7 @@
             // Eliminar todos los productos de la cesta
             $sqlEliminarProductos = "DELETE FROM productosCestas WHERE idCesta = '$idCesta'";
             $conexion->query($sqlEliminarProductos);
-            header('location: cesta.php');
+            //header('location: cesta.php');
         }
         //Para eliminar un producto en particular
         if (isset($_POST["unidades"], $_POST["productoEliminar"], $_POST["cantidadActual"])) {
@@ -40,15 +35,23 @@
                 // Si la nueva cantidad es positiva, actualizamos la tabla
                 $sqlActualizarCantidad = "UPDATE productosCestas SET cantidad = $cantidadTotal WHERE idProducto='$idProductoEliminar'";
                 $conexion->query($sqlActualizarCantidad);
-                header('location: cesta.php');
+                //header('location: cesta.php');
             } else {
                 // Si la nueva cantidad es 0 o negativa, eliminamos el producto
                 $sqlEliminarProducto = "DELETE FROM productosCestas WHERE idProducto='$idProductoEliminar'";
                 $conexion->query($sqlEliminarProducto);
-                header('location: cesta.php');
+                //header('location: cesta.php');
             }
         }
     }
+
+    //Consulta para obtener los datos de la cesta
+    $consultaCesta = "SELECT productosCestas.idProducto, productos.nombreProducto, productos.imagen, productosCestas.cantidad, productos.precio
+                      FROM productosCestas
+                      INNER JOIN productos ON productosCestas.idProducto = productos.idProducto
+                      WHERE productosCestas.idCesta = '$idCesta'";
+    $resultadoCesta = $conexion->query($consultaCesta);
+    
     ?>
     <div class="container">
         <h1 style="text-align:center; margin:20px;">Cesta de <?php echo $usuario?></h1>
