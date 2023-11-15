@@ -47,8 +47,11 @@
             </div>
             <input class="btn btn-primary" type="submit" value="Iniciar sesion">
         </form>
-        <button class="btn btn-dark" style= "float:auto; margin:10px">
+        <button class="btn btn-dark" style= "float:left; margin:10px">
                     <a href="registroUsuario.php" style="text-decoration:none; color:white">Regístrate</a>
+        </button>
+        <button class="btn btn-dark" style= "float:right; margin:10px">
+                    <a href="listadoProductos.php" style="text-decoration:none; color:white">Acceder como invitado</a>
         </button>
     </div>
     </div>
