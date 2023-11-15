@@ -103,12 +103,14 @@
                     </td>
                 </tr><?php
             }?>
-            </tbody>
-            <tfoot class="table-danger">
-                <tr>
-                    <td style="text-align: center;" colspan="5"><b>Precio total: <?php echo $precioTotal; ?>€</b></td>
-                </tr>
-            </tfoot>
+            </tbody><?php
+            if ($precioTotal>0){?>
+                <tfoot class="table-danger">
+                    <tr>
+                        <td style="text-align: center;" colspan="5"><b>Precio total: <?php echo $precioTotal; ?>€</b></td>
+                    </tr>
+                </tfoot><?php
+            }?>
         </table>
         <form method="post" style="text-align:center;">
                 <button class="btn btn-danger" name="vaciarCesta" type="submit">Vaciar Cesta</button>
