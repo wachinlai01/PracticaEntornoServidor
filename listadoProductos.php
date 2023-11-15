@@ -19,6 +19,8 @@
             $resultado = $conexion->query($consulta);
             $fila = $resultado->fetch_assoc();
             $rol = $fila['rol'];
+            //Guardamos el rol para usarlo en otras variables
+            $_SESSION["rol"]=$rol;
             //Obtenemos el id de la cesta
             $consultaCesta="SELECT idCesta FROM cestas WHERE usuario='$usuario'";
             $resultadoCesta= $conexion->query($consultaCesta);
