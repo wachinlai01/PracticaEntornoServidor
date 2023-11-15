@@ -23,7 +23,6 @@
             // Eliminar todos los productos de la cesta
             $sqlEliminarProductos = "DELETE FROM productosCestas WHERE idCesta = '$idCesta'";
             $conexion->query($sqlEliminarProductos);
-            //header('location: cesta.php');
         }
         //Para eliminar un producto en particular
         if (isset($_POST["unidades"], $_POST["productoEliminar"], $_POST["cantidadActual"])) {
@@ -35,15 +34,19 @@
                 // Si la nueva cantidad es positiva, actualizamos la tabla
                 $sqlActualizarCantidad = "UPDATE productosCestas SET cantidad = $cantidadTotal WHERE idProducto='$idProductoEliminar'";
                 $conexion->query($sqlActualizarCantidad);
-                //header('location: cesta.php');
             } else {
                 // Si la nueva cantidad es 0 o negativa, eliminamos el producto
                 $sqlEliminarProducto = "DELETE FROM productosCestas WHERE idProducto='$idProductoEliminar'";
                 $conexion->query($sqlEliminarProducto);
-                //header('location: cesta.php');
             }
         }
     }
+
+    //Para confirmar el pedido
+    if (isset($_POST['finalizarCompra'])){
+        $pedido=$_POST['finalizarCompra'];      
+    }
+
 
     //Consulta para obtener los datos de la cesta
     $consultaCesta = "SELECT productosCestas.idProducto, productos.nombreProducto, productos.imagen, productosCestas.cantidad, productos.precio
@@ -111,11 +114,45 @@
                     </tr>
                 </tfoot><?php
             }?>
-        </table>
-        <form method="post" style="text-align:center;">
-                <button class="btn btn-danger" name="vaciarCesta" type="submit">Vaciar Cesta</button>
-        </form>
-        </div>
+        </table><?php
+        if ($precioTotal>0){?>
+            <form method="post" style="float: right;">
+                    <button class="btn btn-danger" name="vaciarCesta" type="submit">Vaciar Cesta</button>
+            </form>
+            <form method="post" action="">
+                <button class="btn btn-success" name="finalizarCompra" type="submit">Finalizar Pedido</button>
+            </form><?php
+        }?>
+    </div>
+    <?php 
+    //Para insertar el pedido
+    if (isset($pedido)){
+        $sql = "INSERT INTO pedidos (usuario, precioTotal) 
+                              VALUES ('$usuario', $precioTotal)";
+        $conexion->query($sql);   
+        //Método para obtener el id del pedido que acabamos de generar 
+        $idPedido = $conexion->insert_id;  
+        //Para insertar los datos en la tabla lineasPedidos
+        $consultaProductosCesta = "SELECT pc.idProducto, pc.cantidad, p.precio
+                           FROM productosCestas pc
+                           JOIN productos p ON pc.idProducto = p.idProducto
+                           WHERE pc.idCesta = '$idCesta'";
+        $resultadoProductosCesta = $conexion->query($consultaProductosCesta);
+        while ($fila = $resultadoProductosCesta->fetch_assoc()) {
+            $idProducto = $fila['idProducto'];
+            $cantidad = $fila['cantidad'];
+            $precioUnitario = $fila['precio'];
+            // Insertamos en la tabla lineasPedidos
+            $sql = "INSERT INTO lineasPedidos (idProducto, idPedido, precioUnitario, cantidad) 
+                    VALUES ('$idProducto', '$idPedido', $precioUnitario, $cantidad)";
+
+            $conexion->query($sql);
+        }
+        //Para vaciar la cesta
+        $sqlEliminarProductos = "DELETE FROM productosCestas WHERE idCesta = '$idCesta'";
+        $conexion->query($sqlEliminarProductos);
+        header('location: cesta.php');
+    }?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
