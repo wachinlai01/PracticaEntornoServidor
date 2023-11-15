@@ -55,7 +55,17 @@ CREATE TABLE pedidos(
 );
 
 CREATE TABLE lineasPedidos(
-
+	lineaPedido NUMERIC(2) PRIMARY KEY,
+    idProducto INT,
+    idPedido INT,
+    precioUnitario NUMERIC(7,2) NOT NULL,
+    cantidad NUMERIC(5) NOT NULL,
+    CONSTRAINT Fk_lineasPedidos_pedidos 
+		FOREIGN KEY (idPedido)
+        REFERENCES pedidos(idPedido),
+	 CONSTRAINT Fk_lineasPedidos_productos 
+		FOREIGN KEY (idProducto)
+        REFERENCES productos(idProducto)
 );
 
 
@@ -66,6 +76,8 @@ SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
 SELECT * FROM productosCestas;
+SELECT * FROM pedidos;
+SELECT * FROM lineasPedidos;
 DELETE FROM productos;
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
