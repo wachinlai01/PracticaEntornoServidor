@@ -55,7 +55,7 @@ CREATE TABLE pedidos(
 );
 
 CREATE TABLE lineasPedidos(
-	lineaPedido INT PRIMARY KEY AUTO_INCREMENT,
+	lineaPedido NUMERIC(2) NOT NULL,
     idProducto INT,
     idPedido INT,
     precioUnitario NUMERIC(7,2) NOT NULL,
