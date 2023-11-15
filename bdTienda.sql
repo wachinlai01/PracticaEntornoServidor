@@ -44,6 +44,22 @@ CREATE TABLE productosCestas (
         REFERENCES Cestas(idCesta)
 );
 
+CREATE TABLE pedidos(
+	idPedido INT PRIMARY KEY AUTO_INCREMENT,
+    usuario VARCHAR(12),
+    precioTotal NUMERIC(7,2) NOT NULL,
+    fechaPedido DATE NOT NULL DEFAULT (CURRENT_DATE),
+    CONSTRAINT Fk_pedidos 
+		FOREIGN KEY (usuario)
+        REFERENCES usuarios(usuario)
+);
+
+CREATE TABLE lineasPedidos(
+
+);
+
+
+
 COMMIT;
 UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
 SELECT * FROM productos;
