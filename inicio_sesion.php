@@ -50,9 +50,9 @@
         <button class="btn btn-dark" style= "float:left; margin:10px">
                     <a href="registroUsuario.php" style="text-decoration:none; color:white">Regístrate</a>
         </button>
-        <button class="btn btn-dark" style= "float:right; margin:10px">
-                    <a href="listadoProductos.php" style="text-decoration:none; color:white">Acceder como invitado</a>
-        </button>
+        <a class="btn btn-dark"  href="listadoProductos.php" style= "float:right; margin:10px;text-decoration:none; color:white">
+                    Acceder como invitado
+        </a>
     </div>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
