@@ -55,7 +55,7 @@ CREATE TABLE pedidos(
 );
 
 CREATE TABLE lineasPedidos(
-	lineaPedido NUMERIC(2) PRIMARY KEY,
+	lineaPedido INT PRIMARY KEY AUTO_INCREMENT,
     idProducto INT,
     idPedido INT,
     precioUnitario NUMERIC(7,2) NOT NULL,
@@ -79,5 +79,7 @@ SELECT * FROM productosCestas;
 SELECT * FROM pedidos;
 SELECT * FROM lineasPedidos;
 DELETE FROM productos;
+DELETE FROM pedidos;
+DELETE FROM lineasPedidos;
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
