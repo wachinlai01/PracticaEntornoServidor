@@ -138,15 +138,18 @@
                            JOIN productos p ON pc.idProducto = p.idProducto
                            WHERE pc.idCesta = '$idCesta'";
         $resultadoProductosCesta = $conexion->query($consultaProductosCesta);
+        //Todos los pedidos empiezan en la linea de pedido 1
+        $lineaPedido=1;
         while ($fila = $resultadoProductosCesta->fetch_assoc()) {
             $idProducto = $fila['idProducto'];
             $cantidad = $fila['cantidad'];
             $precioUnitario = $fila['precio'];
             // Insertamos en la tabla lineasPedidos
-            $sql = "INSERT INTO lineasPedidos (idProducto, idPedido, precioUnitario, cantidad) 
-                    VALUES ('$idProducto', '$idPedido', $precioUnitario, $cantidad)";
+            $sql = "INSERT INTO lineasPedidos (lineaPedido, idProducto, idPedido, precioUnitario, cantidad) 
+                    VALUES ($lineaPedido,'$idProducto', '$idPedido', $precioUnitario, $cantidad)";
 
             $conexion->query($sql);
+            $lineaPedido++;
         }
         //Para vaciar la cesta
         $sqlEliminarProductos = "DELETE FROM productosCestas WHERE idCesta = '$idCesta'";
