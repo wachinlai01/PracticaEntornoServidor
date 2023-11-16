@@ -111,24 +111,28 @@
                         <td>
                         <img  height="80" src="<?php echo $producto->imagen?>">
                         </td><?php
-                        if ($usuario!="invitado"){?>
-                            <td>
-                                <form action="" method="post">
-                                    <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto?>">
-                                    <select name="unidades"><?php
-                                        if (isset($error_unidades)){
-                                            echo $error_unidades;
-                                        }
-                                        ?>
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    <input class="btn btn-warning" type="submit" value="Añadir cesta">
-                                </form>
-                            </td><?php
+                        if ($usuario!="invitado"){
+                            if($producto->cantidad>0){?>
+                                <td>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto?>">
+                                        <select name="unidades"><?php
+                                            if (isset($error_unidades)){
+                                                echo $error_unidades;
+                                            }
+                                            ?>
+                                            <option value="1" selected>1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <input class="btn btn-warning" type="submit" value="Añadir cesta">
+                                    </form>
+                                </td><?php
+                            }else{?>
+                                <td>Producto agotado</td><?php
+                            }
                         }
                     echo "</tr>";
                 }
@@ -141,21 +145,48 @@
         // Comprobamos si el producto existe en nuestra cesta
         $consultaProductoExistente = "SELECT cantidad FROM productosCestas WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
         $resultadoProductoExistente = $conexion->query($consultaProductoExistente);
-
+    
         if ($resultadoProductoExistente->num_rows > 0) {
             // El producto ya está en la cesta, actualizamos la cantidad
             $filaExistente = $resultadoProductoExistente->fetch_assoc();
             $cantidadExistente = $filaExistente["cantidad"];
             $nuevaCantidad = $cantidadExistente + $unidades;
-
-            // Actualizamos la cantidad en la base de datos
+    
+            // Modificamos la cantidad en productos
+            $consultaProducto = "SELECT cantidad FROM productos WHERE idProducto='$id_producto'";
+            $resultadoProducto = $conexion->query($consultaProducto);
+            
+            if ($resultadoProducto->num_rows > 0) {
+                $filaProducto = $resultadoProducto->fetch_assoc();
+                $cantidadOriginal = $filaProducto["cantidad"];
+                $nuevaCantidadProducto = $cantidadOriginal - $unidades;
+    
+                $sqlUpdateProducto = "UPDATE productos SET cantidad='$nuevaCantidadProducto' WHERE idProducto='$id_producto'";
+                $conexion->query($sqlUpdateProducto);
+            }
+            
+            // Actualizamos la cantidad del producto en la cesta
             $sql = "UPDATE productosCestas SET cantidad='$nuevaCantidad' WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
             $conexion->query($sql);
         } else {
             // El producto no está en la cesta, lo añadimos
             $sql = "INSERT INTO productosCestas (idProducto, idCesta, cantidad) VALUES ('$id_producto','$idCesta','$unidades')";
             $conexion->query($sql);
+    
+            // Actualizamos la cantidad en la base de datos de productos
+            $consultaProducto = "SELECT cantidad FROM productos WHERE idProducto='$id_producto'";
+            $resultadoProducto = $conexion->query($consultaProducto);
+            
+            if ($resultadoProducto->num_rows > 0) {
+                $filaProducto = $resultadoProducto->fetch_assoc();
+                $cantidadOriginal = $filaProducto["cantidad"];
+                $nuevaCantidadProducto = $cantidadOriginal - $unidades;
+    
+                $sqlUpdateProducto = "UPDATE productos SET cantidad='$nuevaCantidadProducto' WHERE idProducto='$id_producto'";
+                $conexion->query($sqlUpdateProducto);
+            }
         }
+        header('location: listadoProductos.php');
     }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
