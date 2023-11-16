@@ -143,26 +143,26 @@
     <?php
     if(isset($unidades)) {
         // Comprobamos si el producto existe en nuestra cesta
-        $consultaProductoExistente = "SELECT cantidad FROM productosCestas WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
-        $resultadoProductoExistente = $conexion->query($consultaProductoExistente);
+        $consultaProducto = "SELECT cantidad FROM productosCestas WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+        $resultadoProducto = $conexion->query($consultaProducto);
     
-        if ($resultadoProductoExistente->num_rows > 0) {
+        if ($resultadoProducto->num_rows > 0) {
             // El producto ya está en la cesta, actualizamos la cantidad
-            $filaExistente = $resultadoProductoExistente->fetch_assoc();
-            $cantidadExistente = $filaExistente["cantidad"];
-            $nuevaCantidad = $cantidadExistente + $unidades;
+            $filaProd = $resultadoProducto->fetch_assoc();
+            $cantidadProd = $filaProd["cantidad"];
+            $nuevaCantidad = $cantidadProd + $unidades;
     
             // Modificamos la cantidad en productos
             $consultaProducto = "SELECT cantidad FROM productos WHERE idProducto='$id_producto'";
             $resultadoProducto = $conexion->query($consultaProducto);
             
             if ($resultadoProducto->num_rows > 0) {
-                $filaProducto = $resultadoProducto->fetch_assoc();
-                $cantidadOriginal = $filaProducto["cantidad"];
-                $nuevaCantidadProducto = $cantidadOriginal - $unidades;
+                $filaProd = $resultadoProducto->fetch_assoc();
+                $cantidadOriginal = $filaProd["cantidad"];
+                $nuevaCantidad = $cantidadOriginal - $unidades;
     
-                $sqlUpdateProducto = "UPDATE productos SET cantidad='$nuevaCantidadProducto' WHERE idProducto='$id_producto'";
-                $conexion->query($sqlUpdateProducto);
+                $sql = "UPDATE productos SET cantidad='$nuevaCantidad' WHERE idProducto='$id_producto'";
+                $conexion->query($sql);
             }
             
             // Actualizamos la cantidad del producto en la cesta
@@ -178,12 +178,12 @@
             $resultadoProducto = $conexion->query($consultaProducto);
             
             if ($resultadoProducto->num_rows > 0) {
-                $filaProducto = $resultadoProducto->fetch_assoc();
-                $cantidadOriginal = $filaProducto["cantidad"];
-                $nuevaCantidadProducto = $cantidadOriginal - $unidades;
+                $filaProd = $resultadoProducto->fetch_assoc();
+                $cantidadOriginal = $filaProd["cantidad"];
+                $nuevaCantidad = $cantidadOriginal - $unidades;
     
-                $sqlUpdateProducto = "UPDATE productos SET cantidad='$nuevaCantidadProducto' WHERE idProducto='$id_producto'";
-                $conexion->query($sqlUpdateProducto);
+                $sql = "UPDATE productos SET cantidad='$nuevaCantidad' WHERE idProducto='$id_producto'";
+                $conexion->query($sql);
             }
         }
         header('location: listadoProductos.php');
