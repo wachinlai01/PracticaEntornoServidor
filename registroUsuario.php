@@ -39,7 +39,13 @@
             if (strlen($tmp_password)>255){
                 $err_password="Has sobrepasado la cantidad de caracteres maxima(255)";
             }else{
-                $password=$tmp_password;
+                $regex="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,20}$/";
+                if(!preg_match($regex, $tmp_password)){
+                    $err_password = "La contraseña debe contener cualquier combinación de 8 a 20
+                    caracteres incluyendo al menos 1 minúscula, 1 mayúscula, 1 número y un carácter especial";
+                }else{
+                    $password=$tmp_password;
+                }
             }
         }
 
