@@ -68,7 +68,7 @@ CREATE TABLE lineasPedidos(
         REFERENCES productos(idProducto)
 );
 
-
+DROP TABLE lineasPedidos;
 
 COMMIT;
 UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
@@ -76,10 +76,6 @@ SELECT * FROM productos;
 SELECT * FROM usuarios;
 SELECT * FROM cestas;
 SELECT * FROM productosCestas;
-SELECT * FROM pedidos;
-SELECT * FROM lineasPedidos;
 DELETE FROM productos;
-DELETE FROM pedidos;
-DELETE FROM lineasPedidos;
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
