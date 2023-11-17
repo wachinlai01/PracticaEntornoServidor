@@ -72,8 +72,11 @@ DROP TABLE lineasPedidos;
 
 COMMIT;
 UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
+UPDATE productos SET cantidad = 12 WHERE idProducto = 5;
 SELECT * FROM productos;
-SELECT * FROM usuarios;
+
+UPDATE productos SET cantidad=cantidad+1 WHERE idProducto = 4;
+SELECT * FROM lineasPedidos;
 SELECT * FROM cestas;
 SELECT * FROM productosCestas;
 DELETE FROM productos;
