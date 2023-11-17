@@ -63,6 +63,7 @@
                 // Si la nueva cantidad es 0 o negativa, eliminamos el producto
                 $sql = "DELETE FROM productosCestas WHERE idProducto='$idProductoEliminar'";
                 $conexion->query($sql);
+                $unidades=$cantidadActual;
             }
 
             // Actualizar la cantidad en la base de datos de productos
@@ -189,7 +190,8 @@
         //Para vaciar la cesta
         $sqlEliminarProductos = "DELETE FROM productosCestas WHERE idCesta = '$idCesta'";
         $conexion->query($sqlEliminarProductos);
-        header('location: cesta.php');
+        //Para actualizar la página
+        echo '<script>window.location.href = "cesta.php";</script>';
     }?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
