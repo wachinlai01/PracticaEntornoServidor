@@ -178,10 +178,6 @@
         <!--Comprobación-->
         <?php
         if(isset($producto) && isset($precio) && isset($descripcion) && isset($cantidad) && isset($ruta)) {
-            echo "<h3>Nombre del producto: $producto</h3>";
-            echo "<h3>Precio del producto: $precio</h3>";
-            echo "<h3>Descripcion del producto: $descripcion</h3>";
-            echo "<h3>Stock: $cantidad</h3>";
             $sql = "INSERT INTO productos (nombreProducto, precio, descripcion, cantidad, imagen)
                 VALUES ('$producto','$precio','$descripcion','$cantidad', '$ruta')";
             $conexion->query($sql);
