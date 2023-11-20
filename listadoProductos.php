@@ -143,41 +143,43 @@
     <?php
     if(isset($unidades)) {
         // Comprobamos si el producto existe en nuestra cesta
-        $consultaProducto = "SELECT cantidad FROM productosCestas WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
-        $resultadoProducto = $conexion->query($consultaProducto);
-    
-        if ($resultadoProducto->num_rows > 0) {
+        $consultaProductoCesta = "SELECT cantidad FROM productosCestas WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+        $resultadoProductoCesta = $conexion->query($consultaProductoCesta);
+        //Si devuelve algo el producto ya existe en la cesta
+        if ($resultadoProductoCesta->num_rows > 0) {
             // El producto ya está en la cesta, actualizamos la cantidad
-            $filaProd = $resultadoProducto->fetch_assoc();
+            $filaProd = $resultadoProductoCesta->fetch_assoc();
+            //Cantidad existente en la cesta
             $cantidadProd = $filaProd["cantidad"];
+            //La nueva cantidad, será la existente + las añadidas.
             $nuevaCantidad = $cantidadProd + $unidades;
-            echo $cantidadProd;
             // Modificamos la cantidad en productos
             $consultaProducto = "SELECT cantidad FROM productos WHERE idProducto='$id_producto'";
             $resultadoProducto = $conexion->query($consultaProducto);
-            
-            if ($resultadoProducto->num_rows > 0) {
-                $filaProd = $resultadoProducto->fetch_assoc();
-                $cantidadOriginal = $filaProd["cantidad"];
-                $nuevaCantidadProductos = $cantidadOriginal - $unidades;
-                if ($nuevaCantidadProductos > 0){
-                    $sql = "UPDATE productos SET cantidad='$nuevaCantidadProductos' WHERE idProducto='$id_producto'";
-                    $conexion->query($sql);
-                }else{
-                    $sql = "UPDATE productos SET cantidad=0 WHERE idProducto='$id_producto'";
-                    $conexion->query($sql);
-                }
-            }
-            echo $cantidadProd;
-            // Actualizamos la cantidad del producto en la cesta, dependiendo del numero de unidades
-            if($cantidadProd>$unidades){
-                $sql = "UPDATE productosCestas SET cantidad='$nuevaCantidad' WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+            $filaProd = $resultadoProducto->fetch_assoc();
+            //Cantidad en stock
+            $cantidadOriginal = $filaProd["cantidad"];
+            //Valor tras eliminar stock
+            $nuevaCantidadProductos = $cantidadOriginal - $unidades;
+            if ($nuevaCantidadProductos > 0){
+                //Si es positivo actualizo al nuevo valor
+                $sql = "UPDATE productos SET cantidad='$nuevaCantidadProductos' WHERE idProducto='$id_producto'";
                 $conexion->query($sql);
             }else{
-                echo $cantidadOriginal;
-                $sql = "UPDATE productosCestas SET cantidad=cantidad+$cantidadOriginal WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+                //Si es negativo o 0 lo dejo a 0
+                $sql = "UPDATE productos SET cantidad=0 WHERE idProducto='$id_producto'";
                 $conexion->query($sql);
             }
+            // Actualizamos la cantidad del producto en la cesta, dependiendo del numero de unidades
+            if ($cantidadOriginal > $unidades) {
+                // Si hay suficiente stock, actualizamos la cantidad en la cesta
+                $sql = "UPDATE productosCestas SET cantidad='$nuevaCantidad' WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+                $conexion->query($sql);
+            } else {
+                // Si no hay suficiente stock, añadimos la cantidad disponible a la cesta
+                $sql = "UPDATE productosCestas SET cantidad=cantidad+$cantidadOriginal WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+                $conexion->query($sql);
+            }            
         } else {
             // El producto no está en la cesta, lo añadimos
             $sql = "INSERT INTO productosCestas (idProducto, idCesta, cantidad) VALUES ('$id_producto','$idCesta','$unidades')";
@@ -186,19 +188,30 @@
             // Actualizamos la cantidad en la base de datos de productos
             $consultaProducto = "SELECT cantidad FROM productos WHERE idProducto='$id_producto'";
             $resultadoProducto = $conexion->query($consultaProducto);
-            
-            if ($resultadoProducto->num_rows > 0) {
-                $filaProd = $resultadoProducto->fetch_assoc();
-                $cantidadOriginal = $filaProd["cantidad"];
-                $nuevaCantidadProductos = $cantidadOriginal - $unidades;
-                if ($nuevaCantidadProductos > 0){
-                    $sql = "UPDATE productos SET cantidad='$nuevaCantidadProductos' WHERE idProducto='$id_producto'";
-                    $conexion->query($sql);
-                }else{
-                    $sql = "UPDATE productos SET cantidad=0 WHERE idProducto='$id_producto'";
-                    $conexion->query($sql);
-                }
+            $filaProd = $resultadoProducto->fetch_assoc();
+            //Stock actual
+            $cantidadOriginal = $filaProd["cantidad"];
+            //Stock tras modificar
+            $nuevaCantidadProductos = $cantidadOriginal - $unidades;
+            if ($nuevaCantidadProductos > 0){
+                //Si es positivo actualizo al nuevo valor
+                $sql = "UPDATE productos SET cantidad='$nuevaCantidadProductos' WHERE idProducto='$id_producto'";
+                $conexion->query($sql);
+            }else{
+                //Si es negativo o 0 lo dejo a 0
+                $sql = "UPDATE productos SET cantidad=0 WHERE idProducto='$id_producto'";
+                $conexion->query($sql);
             }
+            // Actualizamos la cantidad del producto en la cesta, dependiendo del numero de unidades
+            if ($cantidadOriginal > $unidades) {
+                // Si hay suficiente stock, actualizamos la cantidad en la cesta
+                $sql = "UPDATE productosCestas SET cantidad='$unidades' WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+                $conexion->query($sql);
+            } else {
+                // Si no hay suficiente stock, añadimos lo disponible
+                $sql = "UPDATE productosCestas SET cantidad='$cantidadOriginal' WHERE idProducto='$id_producto' AND idCesta='$idCesta'";
+                $conexion->query($sql);
+            }         
         }
         //Para actualizar la página
         echo '<script>window.location.href = "listadoProductos.php";</script>';
