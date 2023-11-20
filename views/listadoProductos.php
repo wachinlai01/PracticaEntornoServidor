@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de productos</title>
-    <?php require "conexionTienda.php" ?>
-    <?php require "classProducto.php" ?>
+    <?php require "../util/conexionTienda.php" ?>
+    <?php require "../util/classProducto.php" ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
@@ -66,7 +66,7 @@
         <p style="text-align:center;">Bienvenido <?php echo $usuario?> </p>
         <?php
         if (isset($_SESSION["usuario"])){?>
-            <a class="btn btn-dark" href="cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            <a class="btn btn-dark" href="../util/cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
             Cerrar sesión
             </a>
             <a class="btn btn-dark" href="cesta.php" style= "float:right; margin:10px; text-decoration:none; color:white">

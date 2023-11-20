@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <?php require 'conexionTienda.php' ?>
+    <?php require '../util/conexionTienda.php' ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
@@ -83,7 +83,7 @@
                 $cantidadOriginalProducto = $filaCantidadOriginal["cantidad"];
                 $nCantidadProd = $cantidadOriginalProducto + $unidades;
 
-                // Actualizar la cantidad en la base de datos de productos
+                // Actualizamos la cantidad
                 $sql = "UPDATE productos SET cantidad='$nCantidadProd' WHERE idProducto='$idProductoEliminar'";
                 $conexion->query($sql);
             }
@@ -105,7 +105,7 @@
         <h1 style="text-align:center; margin:20px;">Cesta de <?php echo $usuario?></h1>
         <?php
         if (isset($_SESSION["usuario"])){?>
-            <a class="btn btn-dark" href="cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+            <a class="btn btn-dark" href="../util/cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
             Cerrar sesión
             </a>
             <a class="btn btn-dark" href="listadoProductos.php" style= "float:right; margin:10px; text-decoration:none; color:white">

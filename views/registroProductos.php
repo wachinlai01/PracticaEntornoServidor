@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <?php require 'util.php' ?>
-    <?php require 'conexionTienda.php' ?>
+    <?php require '../util/util.php' ?>
+    <?php require '../util/conexionTienda.php' ?>
 </head>
 <body>
     <?php
@@ -169,7 +169,7 @@
             <br><br>
             <input class="btn btn-primary" type="submit" value="Enviar">
         </form>
-        <a class="btn btn-dark" href="cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
+        <a class="btn btn-dark" href="../util/cerrarsesion.php" style= "float:right; margin:10px; text-decoration:none; color:white">
             Cerrar sesión
         </a>
         <a class="btn btn-dark" href="listadoProductos.php" style= "margin:10px; text-decoration:none; color:white">

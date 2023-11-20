@@ -75,7 +75,7 @@ UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
 UPDATE productos SET cantidad = 20 WHERE idProducto = 2;
 SELECT * FROM productos;
 SELECT * FROM usuarios;
-SELECT * FROM cestas;
+SELECT * FROM pedidos;
 SELECT * FROM lineasPedidos;
 DELETE FROM productos;
 -- Para poder borrar
