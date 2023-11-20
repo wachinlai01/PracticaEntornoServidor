@@ -17,7 +17,7 @@
         $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
         $resultado=$conexion -> query ($sql);
         if ($resultado -> num_rows ===0){
-            echo "El usuario no existe";
+            $err_usuario= "El usuario no existe";
         }else{ 
             while ($fila=$resultado -> fetch_assoc()){
                 $cypher_pass=$fila["contrasena"];
@@ -29,7 +29,7 @@
                 $_SESSION["usuario"]=$usuario;
                 header('location: listadoProductos.php');
             }else{
-                echo "Has olvidado la contraseña";
+                $err_contrasena= "Has olvidado la contraseña";
             }
         }
     }
@@ -38,11 +38,23 @@
         <h1 style="text-align:center; margin:20px;">Inicio de sesion</h1>
         <form action="" method="post">
             <div class="mb-3">
-                <label class="form-label">Usuario</label>
+                <label class="form-label">Usuario</label><?php
+                if (isset($err_usuario)){?>
+                    <div>
+                        <?php echo $err_usuario ?>
+                    </div><?php
+                }
+                ?>
                 <input class="form-control" type="text" name="usuario">
             </div>
             <div class="mb-3">
-                <label class="form-label">Contraseña</label>
+                <label class="form-label">Contraseña</label><?php
+                if (isset($err_contrasena)){?>
+                    <div>
+                        <?php echo $err_contrasena ?>
+                    </div><?php
+                }
+                ?>
                 <input class="form-control" type="password" name="password">
             </div>
             <input class="btn btn-primary" type="submit" value="Iniciar sesion">
