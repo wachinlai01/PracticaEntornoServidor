@@ -72,13 +72,11 @@ DROP TABLE lineasPedidos;
 
 COMMIT;
 UPDATE usuarios SET rol = "admin" WHERE usuario = 'Wachinlai';
-UPDATE productos SET cantidad = 12 WHERE idProducto = 5;
+UPDATE productos SET cantidad = 20 WHERE idProducto = 2;
 SELECT * FROM productos;
-
-UPDATE productos SET cantidad=cantidad+1 WHERE idProducto = 4;
-SELECT * FROM lineasPedidos;
+SELECT * FROM usuarios;
 SELECT * FROM cestas;
-SELECT * FROM productosCestas;
+SELECT * FROM lineasPedidos;
 DELETE FROM productos;
 -- Para poder borrar
 SET SQL_SAFE_UPDATES = 0;
