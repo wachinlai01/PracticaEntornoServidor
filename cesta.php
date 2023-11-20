@@ -31,16 +31,15 @@
                 // Actualizar la cantidad del producto
                 $cantidadOriginal = "SELECT cantidad FROM productos WHERE idProducto = '$idProductoCesta'";
                 $resultadoCantidadOriginal = $conexion->query($cantidadOriginal);
-        
-                if ($resultadoCantidadOriginal->num_rows > 0) {
-                    $filaCantidadOriginal = $resultadoCantidadOriginal->fetch_assoc();
-                    $cantidadOriginalProducto = $filaCantidadOriginal["cantidad"];
-                    $nCantidadProd = $cantidadOriginalProducto + $cantidadCesta;
-        
-                    // Actualizar la cantidad en la base de datos de productos
-                    $sql = "UPDATE productos SET cantidad='$nCantidadProd' WHERE idProducto='$idProductoCesta'";
-                    $conexion->query($sql);
-                }
+                $filaCantidadOriginal = $resultadoCantidadOriginal->fetch_assoc();
+                //stock del producto
+                $cantidadOriginalProducto = $filaCantidadOriginal["cantidad"];
+                //cantidad actuaizada
+                $nCantidadProd = $cantidadOriginalProducto + $cantidadCesta;
+    
+                // Actualizar la cantidad en la base de datos de productos
+                $sql = "UPDATE productos SET cantidad='$nCantidadProd' WHERE idProducto='$idProductoCesta'";
+                $conexion->query($sql);
             }
         
             // Eliminar todos los productos de la cesta
@@ -51,26 +50,35 @@
         // Para eliminar un producto en particular
         if (isset($_POST["unidades"], $_POST["productoEliminar"], $_POST["cantidadActual"])) {
             $idProductoEliminar = $_POST['productoEliminar'];
-            $unidades = $_POST['unidades'];
+            $unidades_tmp = $_POST['unidades'];
             $cantidadActual = $_POST["cantidadActual"];
-            $cantidadTotal = $cantidadActual - $unidades;
 
-            if ($cantidadTotal > 0) {
-                // Si la nueva cantidad es positiva, actualizamos la tabla
-                $sql = "UPDATE productosCestas SET cantidad = $cantidadTotal WHERE idProducto='$idProductoEliminar'";
-                $conexion->query($sql);
-            } else {
-                // Si la nueva cantidad es 0 o negativa, eliminamos el producto
-                $sql = "DELETE FROM productosCestas WHERE idProducto='$idProductoEliminar'";
-                $conexion->query($sql);
-                $unidades=$cantidadActual;
+            //Vamos a validar las unidades
+            //Array con los valores validos del select
+            $valoresPermitidos = ['1', '2', '3','4','5'];
+            if (isset($unidades_tmp) && in_array($unidades_tmp, $valoresPermitidos)) {
+                $unidades=$unidades_tmp;
+            }else{
+                $error_unidades="No intentes hackearme";
             }
 
-            // Actualizar la cantidad en la base de datos de productos
-            $cantidadOriginal = "SELECT cantidad FROM productos WHERE idProducto = '$idProductoEliminar'";
-            $resultadoCantidadOriginal = $conexion->query($cantidadOriginal);
+            //Tan solo haremos algo si las unidades introducidas están en el array
+            if (isset($unidades)){
+                $cantidadTotal = $cantidadActual - $unidades;
+                if ($cantidadTotal > 0) {
+                    // Si la nueva cantidad es positiva, actualizamos la tabla
+                    $sql = "UPDATE productosCestas SET cantidad = $cantidadTotal WHERE idProducto='$idProductoEliminar'";
+                    $conexion->query($sql);
+                } else {
+                    // Si la nueva cantidad es 0 o negativa, eliminamos el producto
+                    $sql = "DELETE FROM productosCestas WHERE idProducto='$idProductoEliminar'";
+                    $conexion->query($sql);
+                    $unidades=$cantidadActual;
+                }
 
-            if ($resultadoCantidadOriginal->num_rows > 0) {
+                // Actualizar la cantidad en la base de datos de productos
+                $cantidadOriginal = "SELECT cantidad FROM productos WHERE idProducto = '$idProductoEliminar'";
+                $resultadoCantidadOriginal = $conexion->query($cantidadOriginal);
                 $filaCantidadOriginal = $resultadoCantidadOriginal->fetch_assoc();
                 $cantidadOriginalProducto = $filaCantidadOriginal["cantidad"];
                 $nCantidadProd = $cantidadOriginalProducto + $unidades;
@@ -80,10 +88,11 @@
                 $conexion->query($sql);
             }
         }
-    }
-    //Para confirmar el pedido
-    if (isset($_POST['finalizarCompra'])){
-        $pedido=$_POST['finalizarCompra'];      
+        
+        //Para confirmar el pedido
+        if (isset($_POST['finalizarCompra'])){
+            $pedido=$_POST['finalizarCompra'];      
+        }
     }
     //Consulta para obtener los datos de la cesta
     $consultaCesta = "SELECT productosCestas.idProducto, productos.nombreProducto, productos.imagen, productosCestas.cantidad, productos.precio
